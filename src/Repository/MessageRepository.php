@@ -6,6 +6,7 @@ use App\Entity\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * @method Message|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,7 +28,7 @@ class MessageRepository extends ServiceEntityRepository
         $this->manager = $manager;
     }
     
-    public function saveMessage($name, $email, $gender, $content)
+    public function saveMessage($name, $email, $gender, $content, $mailer)
     {
         $newMessage = new Message();
 
@@ -39,6 +40,14 @@ class MessageRepository extends ServiceEntityRepository
 
         $this->manager->persist($newMessage);
         $this->manager->flush();
+
+        $email = (new Email())
+            ->from($email)
+            ->to('charleschabvonga622@gmail.com')
+            ->subject('Time for Social Places Mailer!')
+            ->text($content);
+
+        $mailer->send($email);
     }
 
     // /**

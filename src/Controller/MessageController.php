@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 
 #[ApiResource]
 #[Route('/api')]
@@ -23,7 +24,7 @@ class MessageController extends AbstractController
     }
 
     #[Route('/messages', name: 'message-save', methods: 'POST')]
-    public function add(Request $request): JsonResponse
+    public function add(Request $request, MailerInterface $mailer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -36,7 +37,7 @@ class MessageController extends AbstractController
             throw new NotFoundHttpException('Expecting mandatory parameters!');
         }
 
-        $this->messageRepository->saveMessage($name, $email, $gender, $content);
+        $this->messageRepository->saveMessage($name, $email, $gender, $content, $mailer);
 
         return new JsonResponse(['status' => 'Customer created!'], Response::HTTP_CREATED);
     }
