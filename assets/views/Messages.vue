@@ -31,8 +31,8 @@
                 </thead>
                 <tbody>
                   <tr
-                    v-for="item in messages"
-                    :key="item.name"
+                    v-for="(item, index) in messages"
+                    :key="index"
                   >
                     <td>{{ item.name }}</td>
                     <td>{{ item.email }}</td>

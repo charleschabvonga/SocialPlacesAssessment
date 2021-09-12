@@ -5,7 +5,7 @@ export const mutations = {
   setMessage: (state, value) => {
     state.message = value;
   },
-  setUserError: (state, value) => {
+  setMessageError: (state, value) => {
     state.messageError = value;
   },
   setLoadingStatus: (state, value) => {
