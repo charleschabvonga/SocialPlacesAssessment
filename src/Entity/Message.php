@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  */
-// #[ApiResource]
+#[ApiResource]
 class Message
 {
     /**

@@ -41,22 +41,4 @@ class MessageController extends AbstractController
 
         return new JsonResponse(['status' => 'Customer created!'], Response::HTTP_CREATED);
     }
-
-    #[Route('/messages', name: 'message-find-all', methods: 'GET')]
-    public function getAll(): JsonResponse
-    {
-        $messages = $this->messageRepository->findAll();
-        $data = [];
-
-        foreach ($messages as $message) {
-            $data[] = [
-                'name' => $message->getName(),
-                'email' => $message->getEmail(),
-                'gender' => $message->getGender(),
-                'content' => $message->getContent(),
-            ];
-        }
-
-        return new JsonResponse($data, Response::HTTP_OK);
-    }
 }

@@ -2,6 +2,7 @@
     <user-layout>
         <v-app>
             <v-main>
+            <div v-if="error">{{ error }}</div>
                 <v-card class="mx-auto mt-5" width="400px">
                     <v-card-title>
                         <h1 class="display-1">Login</h1>
@@ -12,14 +13,14 @@
                                 type="email"
                                 label="Username"
                                 prepend-icon="mdi-email"
-                                v-model="form.email"
+                                v-model="username"
                                 :rules="emailRules"
                                 required>
                             </v-text-field>
                             <v-text-field
                                 label="Password"
                                 prepend-icon="mdi-lock"
-                                v-model="form.password"
+                                v-model="password"
                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                 :type="showPassword ? 'text' : 'password'"
                                 :rules="passwordRules"
@@ -51,6 +52,8 @@
 
 <script>
 import UserLayout from "../components/UserLayout";
+import axios from 'axios';
+import router from '../router/main'
 
 export default {
     name: "Login",
@@ -60,11 +63,10 @@ export default {
     data:()=>({
         showPassword: false,
         formValidity: false,
-        form: {
-            email: "",
-            password: "",
-        },
-        email: '',
+        username: '',
+        password: '',
+        error: '',
+        isLoading: false,
         emailRules: [
             value => !!value || 'Username/email is required.',
             value => value.indexOf('@') !== 0 || 'Username/email should have a usename.',
@@ -76,12 +78,30 @@ export default {
             value => !!value || 'Password is required.',
         ]
     }),
-    methods:
-    {
-      login() {
-        console.log(this.form);
-        // this.$store.dispatch('user/create', this.form);
-      },
+    props: ['user'],
+    methods: {
+        login() {
+            this.isLoading = true;
+            this.error = '';
+
+            axios
+                .post('/login', {
+                    username: this.username,
+                    password: this.password
+                })
+                .then(response => {
+                    this.$emit('user-authenticated', response.headers.location);
+                    router.push({ name: 'messages' });
+                }).catch(error => {
+                    if (error.response.data.error) {
+                        this.error = error.response.data.error;
+                    } else {
+                        this.error = 'Unknown error';
+                    }
+                }).finally(() => {
+                    this.isLoading = false;
+                })
+        },
     },
 };
 </script>

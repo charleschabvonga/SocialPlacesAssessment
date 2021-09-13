@@ -7,12 +7,7 @@
               <h1 class="display-1">Messages</h1>
           </v-card-title>
           <v-card-text>
-            <v-text-field
-              class="search"
-              placeholder="Search here ..."
-              prepend-icon="mdi-magnify"
-              v-model="search">
-            </v-text-field>
+            <search-bar class="search" @search-messages="onSearchMessages"></search-bar>
           </v-card-text>
           <v-divider></v-divider>
           <template v-if="messages">
@@ -31,8 +26,8 @@
                 </thead>
                 <tbody>
                   <tr
-                    v-for="(item, index) in messages"
-                    :key="index"
+                    v-for="item in filteredMessages"
+                    :key="item['@id']"
                   >
                     <td>{{ item.name }}</td>
                     <td>{{ item.email }}</td>
@@ -52,7 +47,7 @@
 
 <style scoped>
   .search {
-    width: 30%;
+    width: 50%;
   }
   .card {
     width: 80%;
@@ -61,31 +56,39 @@
 
 <script>
   import AdminLayout from '../components/AdminLayout.vue';
+  import SearchBar from '../components/SearchBar.vue';
+  import axios from 'axios';
   export default {
     name: "Messages",
     components: {
     AdminLayout,
+    SearchBar,
   },
-    computed: {
-      messages() {
-        return this.$store.state.message.messages;
-        // return this.$store.state.message.messages.filter(
-        //   (message) => message.name.toLowerCase().includes(this.search.toLowerCase()),
-        // );
-      },
-    },
-    mounted() {
-      this.fetchMessages();
-    },
-    data:()=> {
-      return {
-        search: '',
+  computed: {
+    filteredMessages() {
+      if (!this.searchTerm) {
+        return this.messages;
       }
-    },
-    methods: {
-      fetchMessages() {
-        this.$store.dispatch('message/findAll');
+      return this.messages.filter((message) => (
+        message.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
+        message.gender.toLowerCase().includes(this.searchTerm.toLowerCase())
+      ));
+    }
+  },
+  async created() {
+      const response = await axios.get('/api/messages');
+      this.messages = response.data['hydra:member']; 
+  },
+  data:()=> {
+    return {
+      searchTerm: '',
+      messages: []
+    }
+  },
+  methods: {
+      onSearchMessages(event) {
+          this.searchTerm = event.term;
       },
-    },
-  }
+  },
+}
 </script>

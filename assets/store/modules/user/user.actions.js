@@ -1,8 +1,8 @@
 import {
-  create,
+  create, login,
 } from '../../../api/user.api';
 
-// import router from '@/router';
+import router from '../../../router/main';
 // import toastr from 'toastr';
 
 export const actions = {
@@ -12,7 +12,7 @@ export const actions = {
       .then((response) => {
         console.info('Action Success', response);
         commit('setUserError', undefined);
-        // router.push({ name: 'login' });
+        router.push({ name: 'login' });
         // toastr.success('The user profile was created successfully.', 'User Profile');
       }, (error) => {
         console.error(`Action Error: ${error.message}`);
