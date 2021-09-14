@@ -2,11 +2,45 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\MessageRepository;
+
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use App\Validator\IsValidOwner;
+use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     itemOperations={
+ *          "get",
+ *          "put"={
+ *              "access_control"="is_granted('EDIT', previous_object)",
+ *              "access_control_message"="Only the creator can edit a message"
+ *          },
+ *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={"access_control"="is_granted('ROLE_USER')"}
+ *     },
+ *     attributes={
+ *          "pagination_items_per_page"=10,
+ *          "formats"={"jsonld", "json", "html", "jsonhal", "csv"={"text/csv"}}
+ *     }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "name": "partial",
+ *     "gender": "exact",
+ * })
+ * @ApiFilter(PropertyFilter::class)
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  */
 #[ApiResource]
@@ -21,21 +55,35 @@ class Message
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"message:read", "message:write", "user:read", "user:write"})
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min=2,
+     *     max=100,
+     *     maxMessage="Enter your meesage in 100 chars or less"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"message:read", "message:write"})
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"message:read", "message:write"})
+     * @Assert\NotBlank()
      */
     private $gender;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"message:read", "message:write"})
+     * @Assert\NotBlank()
      */
     private $content;
 

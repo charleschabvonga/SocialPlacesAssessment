@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <v-main>
-            <v-alert v-if="error" border="top" color="red lighten-2" dark>{{ error }}</v-alert>
             <v-card class="mx-auto mt-5" width="400px">
                 <v-card-title>
                     <h1 class="display-1">See You Soon</h1>
