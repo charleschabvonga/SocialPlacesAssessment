@@ -2,25 +2,29 @@
     <user-layout>
         <v-app>
             <v-main>
-            <div v-if="error">{{ error }}</div>
+                <v-progress-linear
+                    v-if="loadingStatus"
+                    indeterminate
+                    color="yellow darken-2"/>
+                <v-alert v-if="loginError" border="top" color="red lighten-2" dark>{{ loginError }}</v-alert>
                 <v-card class="mx-auto mt-5" width="400px">
                     <v-card-title>
                         <h1 class="display-1">Login</h1>
                     </v-card-title>
                     <v-card-text>
-                        <v-form @submit.prevent="submit" v-model="formValidity">
+                        <v-form v-model="formValidity">
                             <v-text-field
                                 type="email"
                                 label="Username"
                                 prepend-icon="mdi-email"
-                                v-model="username"
+                                v-model="form.email"
                                 :rules="emailRules"
                                 required>
                             </v-text-field>
                             <v-text-field
                                 label="Password"
                                 prepend-icon="mdi-lock"
-                                v-model="password"
+                                v-model="form.password"
                                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                                 :type="showPassword ? 'text' : 'password'"
                                 :rules="passwordRules"
@@ -52,21 +56,27 @@
 
 <script>
 import UserLayout from "../components/UserLayout";
-import axios from 'axios';
-import router from '../router/main'
 
 export default {
     name: "Login",
     components: {
         UserLayout,
     },
+    computed: {
+        loadingStatus() {
+            return this.$store.state.user.loadingStatus;
+        },
+        loginError() {
+            return this.$store.state.user.loginError;
+        },
+    },
     data:()=>({
         showPassword: false,
         formValidity: false,
-        username: '',
-        password: '',
-        error: '',
-        isLoading: false,
+        form: {
+            email: '',
+            password: '',
+        },
         emailRules: [
             value => !!value || 'Username/email is required.',
             value => value.indexOf('@') !== 0 || 'Username/email should have a usename.',
@@ -78,30 +88,11 @@ export default {
             value => !!value || 'Password is required.',
         ]
     }),
-    props: ['user'],
-    methods: {
-        login() {
-            this.isLoading = true;
-            this.error = '';
-
-            axios
-                .post('/login', {
-                    username: this.username,
-                    password: this.password
-                })
-                .then(response => {
-                    this.$emit('user-authenticated', response.headers.location);
-                    router.push({ name: 'messages' });
-                }).catch(error => {
-                    if (error.response.data.error) {
-                        this.error = error.response.data.error;
-                    } else {
-                        this.error = 'Unknown error';
-                    }
-                }).finally(() => {
-                    this.isLoading = false;
-                })
-        },
+    methods:
+    {
+      login() {
+        this.$store.dispatch('user/login', this.form);
+      },
     },
 };
 </script>

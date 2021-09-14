@@ -1,4 +1,5 @@
 export const API_PREFIX = `https://127.0.0.1:8000/api`;
+export const NO_API_PREFIX = `https://127.0.0.1:8000`;
 
 const PUT = 'PUT';
 const POST = 'POST';

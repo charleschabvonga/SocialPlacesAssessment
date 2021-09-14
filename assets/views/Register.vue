@@ -2,6 +2,10 @@
     <user-layout>
         <v-app>
         <v-main>
+            <v-progress-linear
+                v-if="loadingStatus"
+                indeterminate
+                color="yellow darken-2"/>
             <v-card class="mx-auto mt-5" width="400px">
             <v-card-title>
                 <h1 class="display-1">Register</h1>
@@ -60,6 +64,11 @@ export default {
     name: "Register",
     components: {
         UserLayout
+    },
+    computed: {
+        loadingStatus() {
+            return this.$store.state.user.loadingStatus;
+        },
     },
     data:()=>({
         showPassword: false,

@@ -6,8 +6,8 @@ export const messageModule = {
   state: () => ({
     messages: [],
     message: undefined,
-    messageError: undefined,
     loadingStatus: false,
+    messageSuccess: false,
   }),
   mutations,
   actions,

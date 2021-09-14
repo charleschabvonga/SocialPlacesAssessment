@@ -26,7 +26,7 @@ export default {
     links: [
         {
             label: 'Contact Us',
-            url: '/contact-us'
+            url: '/'
         },
         {
             label: 'Login',

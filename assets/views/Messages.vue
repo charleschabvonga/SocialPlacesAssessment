@@ -2,6 +2,10 @@
   <admin-layout>
     <v-app>
       <v-main>
+        <v-progress-linear
+          v-if="loadingStatus"
+          indeterminate
+          color="yellow darken-2"/>
         <v-card class="card mx-auto mt-5">
           <v-card-title>
               <h1 class="display-1">Messages</h1>
@@ -73,11 +77,14 @@
         message.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
         message.gender.toLowerCase().includes(this.searchTerm.toLowerCase())
       ));
-    }
+    },
+    loadingStatus() {
+        return this.$store.state.message.loadingStatus;
+    },
   },
   async created() {
       const response = await axios.get('/api/messages');
-      this.messages = response.data['hydra:member']; 
+      this.messages = response.data['hydra:member'];
   },
   data:()=> {
     return {

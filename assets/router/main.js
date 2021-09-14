@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/contact-us',
+        path: '/',
         name: 'contact-us',
         component: ()=>import('../views/ContactUs.vue')
     },
@@ -20,9 +20,18 @@ const routes = [
         component: ()=>import('../views/Messages.vue')
     },
     {
-      path: '/register',
-      name: 'register',
-      component: ()=>import('../views/Register.vue')
+        path: '/register',
+        name: 'register',
+        component: ()=>import('../views/Register.vue')
+    },
+    {
+        path: '/see-you-soon',
+        name: 'SeeYouSoon',
+        component: ()=>import('../views/SeeYouSoon.vue')
+    },
+    {
+        path: '/logout',
+        name: 'logout',
     },
 ];
 

@@ -10,5 +10,5 @@ export default new Vuex.Store({
     message: messageModule,
     user: userModule,
   },
-  // strict: true, // prevents the store being modified outside of a mutation
+  strict: true, // prevents the store being modified outside of a mutation
 });

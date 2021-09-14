@@ -5,10 +5,10 @@ export const mutations = {
   setMessage: (state, value) => {
     state.message = value;
   },
-  setMessageError: (state, value) => {
-    state.messageError = value;
-  },
   setLoadingStatus: (state, value) => {
     state.loadingStatus = value;
+  },
+  setMessageSuccess: (state, value) => {
+    state.messageSuccess = value;
   },
 };

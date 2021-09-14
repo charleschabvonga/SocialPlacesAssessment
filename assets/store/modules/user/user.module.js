@@ -6,8 +6,8 @@ export const userModule = {
   state: () => ({
     users: [],
     user: undefined,
-    userError: undefined,
     loadingStatus: false,
+    loginError: undefined,
   }),
   mutations,
   actions,

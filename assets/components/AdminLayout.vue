@@ -26,7 +26,7 @@ export default {
     links: [
         {
             label: 'Logout',
-            url: '/login'
+            url: '/see-you-soon'
         }
     ]
 })
