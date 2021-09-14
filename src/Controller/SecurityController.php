@@ -12,22 +12,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends AbstractController
 {
     #[Route('/login', name: 'app_login', methods: 'POST')]
-    public function login(IriConverterInterface $iriConverter)
+    public function login(Request $request): Response
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->json([
-                'error' => 'Invalid login request: check that the Content-Type header is "application/json".'
-            ], 400);
-        }
+        $user = $this->getUser();
 
-        return new Response(null, 204, [
-            'Location' => $iriConverter->getIriFromItem($this->getUser())
+        return $this->json([
+            // The getUserIdentifier() method was introduced in Symfony 5.3.
+            // In previous versions it was called getUsername()
+            'username' => $user->getUserIdentifier(),
+            'roles' => $user->getRoles(),
         ]);
     }
 
     #[Route('/logout', name: 'app_logout')]
-    public function logout()
+    public function logout(): void
     {
-        throw new \Exception('should not be reached');
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }

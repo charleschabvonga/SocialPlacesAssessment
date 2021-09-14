@@ -19,18 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     itemOperations={
- *          "get",
- *          "put"={
- *              "access_control"="is_granted('EDIT', previous_object)",
- *              "access_control_message"="Only the creator can edit a message"
- *          },
- *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"}
- *     },
- *     collectionOperations={
- *          "get",
- *          "post",
- *     },
  *     attributes={
  *          "pagination_items_per_page"=10,
  *          "formats"={"jsonld", "json", "html", "jsonhal", "csv"={"text/csv"}}
