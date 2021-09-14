@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     collectionOperations={
  *          "get",
- *          "post"={"access_control"="is_granted('ROLE_USER')"}
+ *          "post",
  *     },
  *     attributes={
  *          "pagination_items_per_page"=10,
