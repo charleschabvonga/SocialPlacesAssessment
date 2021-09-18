@@ -15,7 +15,7 @@
                     <v-text-field
                         label="Name"
                         prepend-icon="mdi-account-circle"
-                        v-model="form.name"
+                        v-model="form.username"
                         :rules="nameRules"
                         required>
                     </v-text-field>

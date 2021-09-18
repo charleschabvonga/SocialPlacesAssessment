@@ -26,7 +26,7 @@ const routes = [
     },
     {
         path: '/see-you-soon',
-        name: 'SeeYouSoon',
+        name: 'see-you-soon',
         component: ()=>import('../views/SeeYouSoon.vue')
     },
     {

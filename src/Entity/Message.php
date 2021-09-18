@@ -2,36 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
-
-use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
-use App\Validator\IsValidOwner;
-use Carbon\Carbon;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     attributes={
- *          "pagination_items_per_page"=10,
- *          "formats"={"jsonld", "json", "html", "jsonhal", "csv"={"text/csv"}}
- *     }
- * )
- * @ApiFilter(SearchFilter::class, properties={
- *     "name": "partial",
- *     "gender": "exact",
- * })
- * @ApiFilter(PropertyFilter::class)
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=MessageRepository::class)
  */
-#[ApiResource]
 class Message
 {
     /**
@@ -43,19 +22,12 @@ class Message
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"message:read", "message:write", "user:read", "user:write"})
      * @Assert\NotBlank()
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     *     maxMessage="Enter your meesage in 100 chars or less"
-     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"message:read", "message:write"})
      * @Assert\NotBlank()
      * @Assert\Email()
      */
@@ -63,14 +35,12 @@ class Message
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"message:read", "message:write"})
      * @Assert\NotBlank()
      */
     private $gender;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"message:read", "message:write"})
      * @Assert\NotBlank()
      */
     private $content;

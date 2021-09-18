@@ -74,8 +74,7 @@
         return this.messages;
       }
       return this.messages.filter((message) => (
-        message.name.toLowerCase().includes(this.searchTerm.toLowerCase()),
-        message.gender.toLowerCase().includes(this.searchTerm.toLowerCase())
+        message.name.toLowerCase().includes(this.searchTerm.toLowerCase())
       ));
     },
     loadingStatus() {
