@@ -2,13 +2,6 @@
     <user-layout>
         <v-app>
             <v-main>
-                <v-progress-linear
-                    v-if="loadingStatus"
-                    indeterminate
-                    color="yellow darken-2"/>
-                <v-alert v-if="messageSuccess" @click="clear" dense text dismissible type="success">
-                    Your message has been successfully sent.
-                </v-alert>
                 <v-card class="mx-auto mt-5" width="400px">
                 <v-card-title>
                     <h1 class="display-1">Contact Us</h1>
@@ -47,6 +40,14 @@
                         </v-textarea>
                     </v-form>
                 </v-card-text>
+                <v-divider></v-divider>
+                <v-progress-linear
+                    v-if="loadingStatus"
+                    indeterminate
+                    color="yellow darken-2"/>
+                <v-alert v-if="messageSuccess" @click="clear" dense text dismissible type="success">
+                    Your message has been successfully sent. Close the alert to reset the form.
+                </v-alert>
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-btn
